@@ -14,6 +14,11 @@ public class Variable
 		this(type, name, null);
 	}
 
+	public Variable(ArrayList<String> modifiers, String type, String name)
+	{
+		this(modifiers, type, name, null);
+	}
+
 	public Variable(String type, String name, String value)
 	{
 		this(null, type, name, value);
@@ -35,7 +40,7 @@ public class Variable
 	public String getModifiersAsString()
 	{
 		String temp = "";
-		if (this.modifiers == null)
+		if (this.modifiers == null || this.modifiers.size() == 0)
 			return temp;
 		for (String modifier : this.modifiers)
 			temp += modifier + " ";
@@ -64,6 +69,6 @@ public class Variable
 
 	public String toString()
 	{
-		return getModifiersAsString() + " " + this.type + " " + this.name + " = " + this.value + ";";
+		return (getModifiersAsString().length() > 0 ? getModifiersAsString() + " " : "") + this.type + " " + this.name + " = " + this.value + ";";
 	}
 }

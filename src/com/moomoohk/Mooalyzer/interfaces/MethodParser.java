@@ -2,11 +2,11 @@ package com.moomoohk.Mooalyzer.interfaces;
 
 import java.util.ArrayList;
 
-import com.moomoohk.Mooalyzer.Variable;
+import com.moomoohk.Mooalyzer.Method;
 
 public interface MethodParser
 {
-	public Variable parseMethod(String method);
+	public Method parseMethod(Configuration config, String method);
 
-	public ArrayList<Variable> parseMethods(ArrayList<String> methods);
+	public ArrayList<Method> parseMethods(Configuration config, ArrayList<String> methods);
 }

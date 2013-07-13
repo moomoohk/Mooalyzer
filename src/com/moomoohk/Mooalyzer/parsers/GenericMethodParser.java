@@ -1,21 +1,20 @@
-
 package com.moomoohk.Mooalyzer.parsers;
 
 import java.util.ArrayList;
 
-import com.moomoohk.Mooalyzer.Variable;
+import com.moomoohk.Mooalyzer.Method;
+import com.moomoohk.Mooalyzer.interfaces.Configuration;
 import com.moomoohk.Mooalyzer.interfaces.MethodParser;
 
 public class GenericMethodParser implements MethodParser
 {
-	public Variable parseMethod(String method)
+	public Method parseMethod(Configuration config, String method)
 	{
 		return null;
 	}
 
-	public ArrayList<Variable> parseMethods(ArrayList<String> methods)
+	public ArrayList<Method> parseMethods(Configuration config, ArrayList<String> methods)
 	{
 		return null;
 	}
 }
-

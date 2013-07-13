@@ -7,11 +7,9 @@ import com.moomoohk.Mooalyzer.Variable;
 
 public interface VariableParser
 {
-	public Variable parseVariable(String variable);
+	public Variable parseVariable(Configuration config, String variable);
 	
-	public ArrayList<Variable> parseVariables(ArrayList<String> variables);
+	public ArrayList<Variable> parseVariables(Configuration config, ArrayList<String> variables);
 	
-	public ArrayList<Variable> parseVariables(String ... variables);
-	
-	public String getTerminator();
+	public ArrayList<Variable> parseVariables(Configuration config, String ... variables);
 }
