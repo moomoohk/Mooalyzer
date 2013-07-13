@@ -11,5 +11,7 @@ public interface VariableParser
 	
 	public ArrayList<Variable> parseVariables(ArrayList<String> variables);
 	
+	public ArrayList<Variable> parseVariables(String ... variables);
+	
 	public String getTerminator();
 }

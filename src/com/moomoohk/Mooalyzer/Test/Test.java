@@ -1,7 +1,9 @@
 package com.moomoohk.Mooalyzer.Test;
 
+import java.util.ArrayList;
 import java.util.Scanner;
 
+import com.moomoohk.Mooalyzer.Variable;
 import com.moomoohk.Mooalyzer.parsers.GenericVariableParser;
 
 public class Test
