@@ -45,38 +45,48 @@ public class GenericClassParser implements ClassParser
 			System.out.println(lineNumber + ": [" + line + "]");
 			if (line.equals("STOP;"))
 				break;
-			boolean isMethod = false;
 			if (line.contains("{"))
 				curlyCounter++;
-			if (line.startsWith(config.getComment()) || line.length() <= 2)
+			if (line.startsWith(config.getPropery("comment")) || (!line.trim().equals("}") && line.length() <= 2))
 			{
 				System.out.println("- Ignoring");
 				continue;
 			}
-			if (line.trim().startsWith(config.getImportDeclaration()))
+			if (line.trim().startsWith(config.getPropery("import")))
 			{
 				System.out.println("- Is an import");
 				c.addImport(line.substring(line.trim().indexOf(" ")).trim());
 				continue;
 			}
-			if (line.contains("("))
-				if (!line.contains(config.getComment()) && !line.startsWith("if") && curlyCounter == 1 && !line.endsWith(config.getTerminator())
-						|| (!line.endsWith(config.getTerminator()) && !line.contains("=") && line.contains("(") && line.contains(config.getComment()) && line.indexOf("(") < line.indexOf(config.getComment())))
-				{
-					System.out.println("- Possibly a method");
-					isMethod = true;
-				}
-				else
-				{
-					System.out.println("- Possibly not a method");
-					isMethod = false;
-				}
-			else
+			boolean isMethod = true;
+			try
+			{
+				method = parseMethod(config, line);
+				System.out.println("- Is a method");
+				System.out.println(method.details());
+			}
+			catch (Exception e)
 			{
 				System.out.println("- Not a method");
 				isMethod = false;
 			}
-			System.out.println("Curly count: " + curlyCounter);
+			//			if (line.contains("("))
+			//				if (!line.contains(config.getPropery("comment")) && !line.startsWith("if") && curlyCounter == 1 && !line.endsWith(config.getPropery("terminator"))
+			//						|| (!line.endsWith(config.getPropery("terminator")) && !line.contains("=") && line.contains("(") && line.contains(config.getPropery("comment")) && line.indexOf("(") < line.indexOf(config.getPropery("comment"))))
+			//				{
+			//					System.out.println("- Possibly a method");
+			//					isMethod = true;
+			//				}
+			//				else
+			//				{
+			//					System.out.println("- Possibly not a method");
+			//					isMethod = false;
+			//				}
+			//			else
+			//			{
+			//				System.out.println("- Not a method");
+			//				isMethod = false;
+			//			}
 			if (line.contains("}"))
 			{
 				curlyCounter--;
@@ -95,7 +105,7 @@ public class GenericClassParser implements ClassParser
 			}
 			else
 			{
-				method = null;
+				//				method = null;
 				if (curlyCounter != 0 || parseVariable(config, line) == null)
 					System.out.println("- Not a variable");
 				else
@@ -107,6 +117,7 @@ public class GenericClassParser implements ClassParser
 			}
 			if (scanningMethod)
 				method.addLine(line);
+			System.out.println("Curly count: " + curlyCounter);
 		}
 		System.out.println("------------------------------| BROKEN |------------------------------");
 		return c;

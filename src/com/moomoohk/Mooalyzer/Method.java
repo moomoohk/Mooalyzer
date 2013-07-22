@@ -5,17 +5,17 @@ import java.util.ArrayList;
 public class Method
 {
 	private ArrayList<String> modifiers;
-	private Variable returnType;
+	private String returnType;
 	private String name;
-	private ArrayList<Variable> parameters;
+	private ArrayList<String> parameters;
 	private ArrayList<String> lines;
 
-	public Method(ArrayList<String> modifiers, Variable returnType, String name)
+	public Method(ArrayList<String> modifiers, String returnType, String name)
 	{
 		this(modifiers, returnType, name, null);
 	}
 
-	public Method(ArrayList<String> modifiers, Variable returnType, String name, ArrayList<Variable> parameters)
+	public Method(ArrayList<String> modifiers, String returnType, String name, ArrayList<String> parameters)
 	{
 		this.modifiers = modifiers;
 		this.returnType = returnType;
@@ -29,17 +29,7 @@ public class Method
 		return this.modifiers;
 	}
 
-	public String getModifiersAsString()
-	{
-		String temp = "";
-		if (this.modifiers == null)
-			return temp;
-		for (String modifier : this.modifiers)
-			temp += modifier + " ";
-		return temp.substring(0, temp.length() - 1);
-	}
-
-	public Variable getReturnType()
+	public String getReturnType()
 	{
 		return this.returnType;
 	}
@@ -49,19 +39,9 @@ public class Method
 		return this.name;
 	}
 
-	public ArrayList<Variable> getParameters()
+	public ArrayList<String> getParameters()
 	{
 		return this.parameters;
-	}
-
-	public String getParametersAsString()
-	{
-		String temp = "";
-		if (this.parameters == null)
-			return temp;
-		for (Variable parameter : this.parameters)
-			temp += parameter.toString() + ", ";
-		return temp.substring(0, temp.length() - 1);
 	}
 
 	public void addLine(String line)
@@ -76,11 +56,11 @@ public class Method
 
 	public String toString()
 	{
-		return (getModifiersAsString().length() > 0 ? getModifiersAsString() + " " : "") + this.returnType + " " + this.name + "(" + getParametersAsString() + ")";
+		return (Utils.getListAsString(this.modifiers, false, false).length() > 0 ? Utils.getListAsString(this.modifiers, false, false) + " " : "") + this.returnType + " " + this.name + "(" + Utils.getListAsString(this.parameters, false, true) + ")";
 	}
 
 	public String details()
 	{
-		return "Method:\n- Modifiers: " + getModifiersAsString() + "\n- Name: " + this.name + "\n- Return type: " + this.returnType + "\n- Parameters: " + getParametersAsString() + "\n- Line count:" + this.lines.size();
+		return "Method:\n- Modifiers: " + Utils.getListAsString(this.modifiers, true, false) + "\n- Name: " + this.name + "\n- Return type: " + this.returnType + "\n- Parameters: " + Utils.getListAsString(this.parameters, true, false) + "\n- Line count:" + this.lines.size();
 	}
 }

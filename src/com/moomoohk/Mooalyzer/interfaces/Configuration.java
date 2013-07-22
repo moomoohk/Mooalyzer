@@ -9,39 +9,22 @@ public abstract class Configuration
 	public Configuration()
 	{
 		config = new HashMap<String, String>();
+		config.put("usescurlies", null);
+		config.put("usesterminator", null);
 		config.put("terminator", null);
 		config.put("import", null);
 		config.put("comment", null);
 		config.put("samelinecurlies", null);
 		config.put("ifthen", null);
+		config.put("classdeclaration", null);
 		populateConfig();
 	}
 
 	protected abstract void populateConfig();
 
-	public String getTerminator()
+	public String getPropery(String property)
 	{
-		return config.get("terminator");
-	}
-
-	public String getImportDeclaration()
-	{
-		return config.get("import");
-	}
-
-	public String getComment()
-	{
-		return config.get("comment");
-	}
-	
-	public String getCurliesConvention()
-	{
-		return config.get("samelinecurlies");
-	}
-	
-	public String getIfThen()
-	{
-		return config.get("ifthen");
+		return this.config.get(property);
 	}
 
 	public HashMap<String, String> getConfig()

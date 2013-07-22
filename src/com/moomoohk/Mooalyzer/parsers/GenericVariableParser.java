@@ -11,7 +11,7 @@ public class GenericVariableParser implements VariableParser
 {//vec3 eye_dir; // Direction eyes are looking
 	public Variable parseVariable(Configuration config, String variable)
 	{
-		if ((variable.contains("=") && (variable.indexOf("=") != variable.lastIndexOf("=") || !variable.substring(0, variable.indexOf("=")).trim().contains(" "))) || (!variable.contains(config.getTerminator())) || (variable.indexOf(" ") == -1))
+		if ((variable.contains("=") && (variable.indexOf("=") != variable.lastIndexOf("=") || !variable.substring(0, variable.indexOf("=")).trim().contains(" "))) || (!variable.contains(config.getPropery("terminator"))) || (variable.indexOf(" ") == -1))
 			return null;
 		Scanner scanner = new Scanner(variable);
 		int words = 0, beforeEquals = 0, afterEquals = 0;
@@ -19,7 +19,7 @@ public class GenericVariableParser implements VariableParser
 		while (scanner.hasNext())
 		{
 			String word = scanner.next();
-			if(word.startsWith(config.getComment()))
+			if(word.startsWith(config.getPropery("comment")))
 				break;
 			words++;
 			if (words == 2 && word.equals("="))
@@ -31,7 +31,7 @@ public class GenericVariableParser implements VariableParser
 				beforeEquals++;
 		}
 		ArrayList<String> modifiers = new ArrayList<String>();
-		String modifierTemp = variable.substring(0, variable.contains("=") ? variable.indexOf("=") : variable.indexOf(config.getTerminator())+1).trim();
+		String modifierTemp = variable.substring(0, variable.contains("=") ? variable.indexOf("=") : variable.indexOf(config.getPropery("terminator"))+1).trim();
 		scanner = new Scanner(modifierTemp);
 		for (int i = 1; i <= words - afterEquals - 2; i++)
 			modifiers.add(scanner.next());
@@ -48,7 +48,7 @@ public class GenericVariableParser implements VariableParser
 		{
 			String type = scanner.next();
 			String name = scanner.next();
-			if (name.endsWith(config.getTerminator()))
+			if (name.endsWith(config.getPropery("terminator")))
 				name = name.substring(0, name.length() - 1);
 			return new Variable(modifiers, type, name);
 		}

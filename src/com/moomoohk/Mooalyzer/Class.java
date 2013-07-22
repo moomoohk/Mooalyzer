@@ -5,14 +5,17 @@ import java.util.ArrayList;
 public class Class
 {
 	private ArrayList<String> imports;
+	private String name;
 	private ArrayList<Method> methods;
 	private ArrayList<Variable> variables;
+	private ArrayList<Class> nestedClasses;
 
 	public Class()
 	{
 		this.imports = new ArrayList<String>();
 		this.methods = new ArrayList<Method>();
 		this.variables = new ArrayList<Variable>();
+		this.nestedClasses = new ArrayList<Class>();
 	}
 
 	public void addImport(String i)
@@ -83,6 +86,11 @@ public class Class
 		for (Variable variable : this.variables)
 			temp += "[" + variable.toString() + "], ";
 		return temp.substring(0, temp.length() - 1);
+	}
+	
+	public ArrayList<Class> getNestedClasses()
+	{
+		return this.nestedClasses;
 	}
 
 	public String details()
