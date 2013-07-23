@@ -24,8 +24,8 @@ public class Test
 
 	public static void main(String[] args)
 	{
-		System.out.println(new GenericMethodParser().parseMethod(new JavaConfiguration(), "void HitByItem(string material, vec3 point, int id, int type) {").toString());
-		System.out.println(new GenericMethodParser().parseMethod(new JavaConfiguration(), "void HitByItem(string material, vec3 point, int id, int type) {").details());
+		System.out.println(new GenericMethodParser().parseMethod(new JavaConfiguration(), "public static final void HitByItem(string material, vec3 point, int id, int type) {").toString());
+		System.out.println(new GenericMethodParser().parseMethod(new JavaConfiguration(), "public static final void HitByItem(string material, vec3 point, int id, int type) {").details());
 		Class c = new GenericClassParser().parseClass(new AngelScriptConfiguration(), null);
 		System.out.println("Parsed with " + new AngelScriptConfiguration().getClass().getName().substring(new AngelScriptConfiguration().getClass().getName().lastIndexOf(".") + 1));
 		System.out.println(c.details());

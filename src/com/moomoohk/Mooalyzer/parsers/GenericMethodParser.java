@@ -17,28 +17,35 @@ public class GenericMethodParser implements MethodParser
 		ArrayList<String> modifiers = new ArrayList<String>();
 		ArrayList<String> parameters = new ArrayList<String>();
 		String returnType = "", name = "";
-		boolean reachedParams = false;
-		int i = 1;
-		String param = "";
-		for (String word : split)
-		{
-			if (word.equals("("))
-			{
-				reachedParams = true;
-				name = modifiers.remove(modifiers.size() - 1).trim();
-				returnType = modifiers.remove(modifiers.size() - 1).trim();
-			}
-			if (!reachedParams)
-				modifiers.add(word.trim());
-			else
-				if (!word.equals("("))
-					if (i % 2 == 0)
-						parameters.add(param + " " + word);
-					else
-						param = word;
-			if (!word.equals(","))
-				i++;
-		}
+		System.out.println(split.indexOf("(") - 2);
+		if (split.indexOf("(") > 2)
+			for (int i = 0; i <= split.indexOf("(") - 2; i++)
+				modifiers.add(split.remove(0));
+		returnType = split.remove(0);
+		name = split.remove(0);
+
+		//		for (String word : split)
+		//		{
+		//			if (word.equals("("))
+		//			{
+		//				reachedParams = true;
+		//				name = modifiers.remove(modifiers.size() - 1).trim();
+		//				returnType = modifiers.remove(modifiers.size() - 1).trim();
+		//			}
+		//			if (!reachedParams)
+		//				modifiers.add(word.trim());
+		//			else
+		//				if (!word.equals("("))
+		//					if (readingParam)
+		//						param += word + " ";
+		//					else
+		//					{
+		//						parameters.add(param.trim());
+		//						param = "";
+		//					}
+		//			if (word.equals(","))
+		//				readingParam = false;
+		//		}
 		return new Method(modifiers, returnType, name, parameters);
 	}
 
