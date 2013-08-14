@@ -15,10 +15,7 @@ public class LuaScript
 	{
 		String st = "";
 		for (LuaStatement statement : statements)
-		{
-			System.out.println("[" + statement + "]");
 			st += statement.toString()+"\n";
-		}
 		return st;
 	}
 }

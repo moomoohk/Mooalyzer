@@ -1,24 +1,28 @@
 package com.moomoohk.Mooalyzer.Lua;
 
+import java.awt.FileDialog;
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.util.ArrayList;
 import java.util.Scanner;
 import java.util.Stack;
+
+import javax.swing.JFrame;
 
 import com.moomoohk.Mooalyzer.Utils;
 
 public class LuaParser
 {
-	public static LuaScript parseScript(File script)
+	public static LuaScript parseScript(File script) throws FileNotFoundException
 	{
 		ArrayList<LuaStatement> statements = new ArrayList<LuaStatement>();
 		Stack<LuaStatement> statementStack = new Stack<LuaStatement>();
 		int level = 0;
-		Scanner scanner = new Scanner("test(1, 2)\n" + "test(3, 4)\n" + "function test(param1, param2)\n" + "if param1 > param2 then\n" + "return param1\n" + "end\n" + "return test(param2, param1)\n" + "end\n" + "test(4, 5)");
+		Scanner scanner = new Scanner(script);
 		while (scanner.hasNextLine())
 		{
-			String line = scanner.nextLine();
-			if (line.trim().length() == 0)
+			String line = scanner.nextLine().trim();
+			if (line.length() == 0)
 				continue;
 			ArrayList<String> split = Utils.splitWords(line);
 			LuaStatement currentStatement = LuaStatement.parse(split);
@@ -55,22 +59,33 @@ public class LuaParser
 						statementStack.peek().addStatement(currentStatement);
 					}
 				}
-			System.out.println("Level: " + level);
-			System.out.println("Line: " + line);
-			System.out.println("-");
 		}
-		System.out.println();
-		System.out.println("DONE");
-		System.out.println(new LuaScript(statements).toString());
-		return null;
+		return new LuaScript(statements);
 	}
 
 	public static void main(String[] args)
 	{
-		LuaStatement temp1 = new LuaStatement(null, "if param1 > param2 then");
-		LuaStatement temp2 = new LuaStatement(temp1, "return param1");
-		temp1.addStatement(temp2);
-		//		System.out.println(temp1.toString());
-		parseScript(null);
+		LuaScript script = null;
+		FileDialog fd = new FileDialog(new JFrame());
+		fd.setVisible(true);
+		if (fd.getFile() != null)
+			try
+			{
+				script = parseScript(new File(fd.getDirectory() + "/" + fd.getFile()));
+			}
+			catch (FileNotFoundException e)
+			{
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		if (script == null)
+			System.out.println("A problem occurred during the parse.");
+		else
+		{
+			System.out.println("-- Parsed with the Lua Mooalyzer --");
+			System.out.println(script.toString());
+			System.out.println("-- END --");
+		}
+		System.exit(0);
 	}
 }

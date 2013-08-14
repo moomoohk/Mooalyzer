@@ -77,9 +77,7 @@ public class LuaStatement
 		String st = getLine();
 		for (int i = 0; i < childStatements.size(); i++)
 		{
-			st+="\n";
-			for (int j = 1; j <= (i + 1); j++)
-				st += "\t";
+			st+="\n\t";
 			st += childStatements.get(i).toString();
 		}
 		return st;
