@@ -74,12 +74,13 @@ public class LuaStatement
 
 	public String toString()
 	{
-		String st = getLine() + "\n";
+		String st = getLine();
 		for (int i = 0; i < childStatements.size(); i++)
 		{
+			st+="\n";
 			for (int j = 1; j <= (i + 1); j++)
 				st += "\t";
-			st += childStatements.get(i).toString() + "\n";
+			st += childStatements.get(i).toString();
 		}
 		return st;
 	}

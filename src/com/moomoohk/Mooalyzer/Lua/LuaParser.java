@@ -14,7 +14,7 @@ public class LuaParser
 		ArrayList<LuaStatement> statements = new ArrayList<LuaStatement>();
 		Stack<LuaStatement> statementStack = new Stack<LuaStatement>();
 		int level = 0;
-		Scanner scanner = new Scanner("test(1, 2)\n" + "test(3, 4)\n" + "function test(param1, param2)\n" + "if param1 > param2 then\n" + "return param1\n" + "end\n" + "return param2\n" + "end\n" + "test(4, 5)");
+		Scanner scanner = new Scanner("test(1, 2)\n" + "test(3, 4)\n" + "function test(param1, param2)\n" + "if param1 > param2 then\n" + "return param1\n" + "end\n" + "return test(param2, param1)\n" + "end\n" + "test(4, 5)");
 		while (scanner.hasNextLine())
 		{
 			String line = scanner.nextLine();
@@ -35,13 +35,18 @@ public class LuaParser
 			else
 				if (split.get(0).equals("end"))
 				{
+					LuaStatement pop = statementStack.pop();
 					level--;
 					if (level == 0)
-						statements.add(statementStack.pop());
+					{
+						pop.addStatement(new LuaStatement(null, "end"));
+						statements.add(pop);
+					}
 					else
-						statementStack.pop().addStatement(new LuaStatement(null, "end"));
+						pop.addStatement(new LuaStatement(null, "end"));
 				}
 				else
+				{
 					if (level == 0)
 						statements.add(currentStatement);
 					else
@@ -49,6 +54,7 @@ public class LuaParser
 						currentStatement.setParent(statementStack.peek());
 						statementStack.peek().addStatement(currentStatement);
 					}
+				}
 			System.out.println("Level: " + level);
 			System.out.println("Line: " + line);
 			System.out.println("-");
