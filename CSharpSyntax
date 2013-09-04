@@ -1,0 +1,34 @@
+namespace [namespace]
+{
+	using [import] //[comment]
+
+	/*
+	/* [comment]
+	*/
+
+	[[attributes]]
+	[modifiers] class [class name] : [parent class/implemented interfaces]
+	{
+		[modifiers] [variable name] = [value];
+		
+		[modifiers] [constructor] ([parameter][, ...]) : this([modifiers] [parameter][, ...])
+		{
+			[lines]
+		}
+	
+		[modifiers] [constructor] ([parameter][, ...]) : base([modifiers] [parameter][, ...])
+		{
+			[lines]
+		}
+
+		[modifiers] [method name] ([parameter][, ...])
+		{
+			[lines]
+		}
+	}
+	
+	interface [interface name] : [implemented interfaces]
+	{
+		[modifiers] [method name]([parameter][, ...]);
+	}
+}
