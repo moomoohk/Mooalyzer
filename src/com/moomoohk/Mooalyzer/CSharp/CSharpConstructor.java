@@ -12,39 +12,39 @@ public class CSharpConstructor extends CSharpMethod
 	private CSharpConstructorType type = CSharpConstructorType.NORMAL;
 	private ArrayList<String> callParameters;
 
-	public CSharpConstructor(String className)
+	public CSharpConstructor(String className, int line)
 	{
-		this(null, className, null, CSharpConstructorType.NORMAL, null);
+		this(null, className, null, CSharpConstructorType.NORMAL, null, line);
 	}
 
-	public CSharpConstructor(ArrayList<String> modifiers, String className)
+	public CSharpConstructor(ArrayList<String> modifiers, String className, int line)
 	{
-		this(modifiers, className, null, CSharpConstructorType.NORMAL, null);
+		this(modifiers, className, null, CSharpConstructorType.NORMAL, null, line);
 	}
 
-	public CSharpConstructor(ArrayList<String> modifiers, String className, ArrayList<String> parameters)
+	public CSharpConstructor(ArrayList<String> modifiers, String className, ArrayList<String> parameters, int line)
 	{
-		this(modifiers, className, parameters, CSharpConstructorType.NORMAL, null);
+		this(modifiers, className, parameters, CSharpConstructorType.NORMAL, null, line);
 	}
 
-	public CSharpConstructor(ArrayList<String> modifiers, String className, ArrayList<String> parameters, CSharpConstructorType type)
+	public CSharpConstructor(ArrayList<String> modifiers, String className, ArrayList<String> parameters, CSharpConstructorType type, int line)
 	{
-		this(modifiers, className, parameters, type, null);
+		this(modifiers, className, parameters, type, null, line);
 	}
 
-	public CSharpConstructor(String className, CSharpConstructorType type)
+	public CSharpConstructor(String className, CSharpConstructorType type, int line)
 	{
-		this(null, className, null, type, null);
+		this(null, className, null, type, null, line);
 	}
 
-	public CSharpConstructor(ArrayList<String> modifiers, String className, CSharpConstructorType type)
+	public CSharpConstructor(ArrayList<String> modifiers, String className, CSharpConstructorType type, int line)
 	{
-		this(modifiers, className, null, type, null);
+		this(modifiers, className, null, type, null, line);
 	}
 
-	public CSharpConstructor(ArrayList<String> modifiers, String className, ArrayList<String> parameters, CSharpConstructorType type, ArrayList<String> callParameters)
+	public CSharpConstructor(ArrayList<String> modifiers, String className, ArrayList<String> parameters, CSharpConstructorType type, ArrayList<String> callParameters, int line)
 	{
-		super(modifiers, className, parameters);
+		super(modifiers, className, parameters, line);
 		this.type = type;
 		this.callParameters = callParameters == null ? new ArrayList<String>() : callParameters;
 	}
@@ -77,6 +77,6 @@ public class CSharpConstructor extends CSharpMethod
 			s += callParameter + ", ";
 		if (this.callParameters.size() > 0)
 			s = s.substring(0, s.length() - 2);
-		return s += ")";
+		return s += ") ";
 	}
 }

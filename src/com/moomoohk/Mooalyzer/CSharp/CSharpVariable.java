@@ -6,19 +6,19 @@ public class CSharpVariable extends CSharpElement
 {
 	private String value;
 
-	public CSharpVariable(String name)
+	public CSharpVariable(String name, int line)
 	{
-		this(null, name, null);
+		this(null, name, null, line);
 	}
 
-	public CSharpVariable(ArrayList<String> modifiers, String name)
+	public CSharpVariable(ArrayList<String> modifiers, String name, int line)
 	{
-		this(modifiers, name, null);
+		this(modifiers, name, null, line);
 	}
 
-	public CSharpVariable(ArrayList<String> modifiers, String name, String value)
+	public CSharpVariable(ArrayList<String> modifiers, String name, String value, int line)
 	{
-		super(modifiers, name);
+		super(modifiers, name, line);
 		this.name = name;
 		this.value = value;
 	}

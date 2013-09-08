@@ -9,9 +9,9 @@ public class CSharpClass extends CSharpElement
 	private ArrayList<CSharpMethod> methods;
 	private ArrayList<CSharpVariable> variables;
 
-	public CSharpClass(ArrayList<String> modifiers, String name, String parentClass, ArrayList<String> interfaces)
+	public CSharpClass(ArrayList<String> modifiers, String name, String parentClass, ArrayList<String> interfaces, int line)
 	{
-		super(modifiers, name);
+		super(modifiers, name, line);
 		this.parentClass = parentClass;
 		this.interfaces = interfaces;
 		this.methods = new ArrayList<CSharpMethod>();

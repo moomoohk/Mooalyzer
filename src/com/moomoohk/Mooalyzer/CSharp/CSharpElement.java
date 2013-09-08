@@ -7,12 +7,14 @@ public abstract class CSharpElement
 	protected ArrayList<CSharpAttribute> attributes;
 	protected ArrayList<String> modifiers;
 	protected String name;
-
-	public CSharpElement(ArrayList<String> modifiers, String name)
+	protected int line;
+	
+	public CSharpElement(ArrayList<String> modifiers, String name, int line)
 	{
 		this.attributes = new ArrayList<CSharpAttribute>();
 		this.modifiers = modifiers == null ? new ArrayList<String>() : modifiers;
 		this.name = name;
+		this.line = line;
 	}
 
 	public ArrayList<CSharpAttribute> getAttributes()
@@ -34,6 +36,11 @@ public abstract class CSharpElement
 	public String getName()
 	{
 		return this.name;
+	}
+
+	public int getLine()
+	{
+		return this.line;
 	}
 
 	public String toString()

@@ -2,7 +2,7 @@ package com.moomoohk.Mooalyzer.CSharp;
 
 import java.util.ArrayList;
 
-public class CSharpComment
+public class CSharpComment extends CSharpElement
 {
 	public static enum CSharpCommentType
 	{
@@ -12,8 +12,9 @@ public class CSharpComment
 	private CSharpCommentType type;
 	private ArrayList<String> lines;
 
-	public CSharpComment(ArrayList<String> lines, CSharpCommentType type)
+	public CSharpComment(ArrayList<String> lines, CSharpCommentType type, int line)
 	{
+		super(null, lines.get(0).length() > 5 ? lines.get(0).substring(0, 5) + "..." : lines.get(0) + (lines.size() > 1 ? " " + lines.get(1) : "") + (lines.size() > 2 ? "..." : ""), line);
 		this.lines = lines;
 		this.type = type;
 	}
@@ -34,9 +35,9 @@ public class CSharpComment
 		switch (this.type)
 		{
 		case BLOCK:
-			st += "/*";
+			st += "/*\n";
 			for (String line : this.lines)
-				st += "/* " + line;
+				st += "* " + line + "\n";
 			st += "*/";
 			break;
 		case INLINE:

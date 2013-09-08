@@ -7,24 +7,24 @@ public class CSharpMethod extends CSharpElement
 	private ArrayList<String> parameters;
 	private ArrayList<String> lines;
 
-	public CSharpMethod(String name)
+	public CSharpMethod(String name, int line)
 	{
-		this(null, name, null);
+		this(null, name, null, line);
 	}
 
-	public CSharpMethod(ArrayList<String> modifiers, String name)
+	public CSharpMethod(ArrayList<String> modifiers, String name, int line)
 	{
-		this(modifiers, name, null);
+		this(modifiers, name, null, line);
 	}
 
-	public CSharpMethod(String name, ArrayList<String> parameters)
+	public CSharpMethod(String name, ArrayList<String> parameters, int line)
 	{
-		this(null, name, parameters);
+		this(null, name, parameters, line);
 	}
 
-	public CSharpMethod(ArrayList<String> modifiers, String name, ArrayList<String> parameters)
+	public CSharpMethod(ArrayList<String> modifiers, String name, ArrayList<String> parameters, int line)
 	{
-		super(modifiers, name);
+		super(modifiers, name, line);
 		this.parameters = parameters == null ? new ArrayList<String>() : parameters;
 		this.lines = new ArrayList<String>();
 	}
