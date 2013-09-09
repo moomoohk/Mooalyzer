@@ -29,9 +29,9 @@ public class Utils
 					temp.add(",");
 			}
 			scanner = new Scanner(line.substring(line.indexOf(")") + 1));
+			temp.add(")");
 			while (scanner.hasNext())
 				temp.add(scanner.next());
-			temp.add(")");
 		}
 		else
 		{
@@ -46,8 +46,8 @@ public class Utils
 
 	public static String getListAsString(List<?> list, boolean boxes, boolean commas)
 	{
-		if(list.contains((Object)"("))
-				return getFunctionAsString(list);
+		if (list.contains((Object) "("))
+			return getFunctionAsString(list);
 		String temp = "";
 		if (list == null || list.size() == 0)
 			return temp;
@@ -62,7 +62,7 @@ public class Utils
 		for (int i = 0; i < list.size() - 1; i++)
 		{
 			temp += list.get(i).toString().trim();
-			if (!list.get(i + 1).toString().equals("(") && !list.get(i + 1).toString().equals(")")&& !list.get(i + 1).toString().equals(",") && !list.get(i).toString().equals("("))
+			if (!list.get(i + 1).toString().equals("(") && !list.get(i + 1).toString().equals(")") && !list.get(i + 1).toString().equals(",") && !list.get(i).toString().equals("("))
 				temp += " ";
 		}
 		temp += ")";

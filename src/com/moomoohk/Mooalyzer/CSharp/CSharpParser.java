@@ -1,9 +1,13 @@
 package com.moomoohk.Mooalyzer.CSharp;
 
+import java.io.File;
+import java.io.FileNotFoundException;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.Scanner;
+
+import javax.print.attribute.standard.Finishings;
 
 import com.moomoohk.Mooalyzer.CSharp.CSharpComment.CSharpCommentType;
 import com.moomoohk.Mooalyzer.CSharp.CSharpConstructor.CSharpConstructorType;
@@ -12,19 +16,78 @@ public class CSharpParser
 {
 	public static ArrayList<CSharpElement> elements = new ArrayList<CSharpElement>();
 
-	public static void parse()
+	public static final int METHOD_LEVEL = 1;
+
+	public static void parse(ArrayList<String> lines)
 	{
-		Scanner scanner = new Scanner(System.in);
+		long start = System.currentTimeMillis();
+		//		Scanner scanner = new Scanner(System.in);
+		//
+		//		ArrayList<String> lines = new ArrayList<String>();
+		//		while (scanner.hasNextLine())
+		//			lines.add(scanner.nextLine());
+		//		for (int i = 0; i < lines.size(); i++)
+		//		{
+		//			String line = lines.get(i);
+		//			//if(line.contains("/*"))
+		//
+		//		}
+		System.out.print("Parsing comments...");
+		parseComments(lines);
+		System.out.println(" Done");
+		System.out.print("Parsing methods...");
+		parseMethods(lines);
+		System.out.println(" Done");
+		parseVariables(lines);
+		System.out.println("Finished (" + (System.currentTimeMillis() - start) + "ms)");
+	}
 
-		ArrayList<String> lines = new ArrayList<String>();
-		while (scanner.hasNextLine())
-			lines.add(scanner.nextLine());
-		for (int i = 0; i < lines.size(); i++)
+	public static ArrayList<String> splitLine(String line)
+	{
+		//		Scanner scanner = new Scanner(line);
+		//		scanner.useDelimiter(" |,|\\(|\\)|:");
+		//		String temp = line;
+		//		//		scanner.useDelimiter("\\s,\\s");
+		//		while (scanner.hasNext())
+		//		{
+		//			String next = scanner.next().trim();
+		//			System.out.println(next);
+		//			temp = temp.substring(next.length()).trim();
+		//			System.out.println("temp: " + temp);
+		//		}
+		ArrayList<String> split = new ArrayList<String>();
+		StringBuilder builder = new StringBuilder();
+		Scanner scanner = new Scanner(line.substring(0, line.indexOf("(")));
+		while (scanner.hasNext())
+			split.add(scanner.next());
+		String params = line.substring(line.indexOf("("));
+		ArrayList<String> temp = new ArrayList<String>();
+		for (char c : params.toCharArray())
 		{
-			String line = lines.get(i);
-			//if(line.contains("/*"))
-
+			if (c == ',' || c == ':' || c == '(' || c == ')' || c == ';')
+			{
+				if (builder.length() > 0)
+					temp.add(builder.toString().trim());
+				temp.add("" + c);
+				builder = new StringBuilder();
+			}
+			else
+				builder.append(c);
 		}
+		builder = new StringBuilder();
+		for (String param : temp)
+		{
+			if (param.equals(",") || param.equals(":") || param.equals("(") || param.equals(")") || param.equals(";"))
+			{
+				if (builder.length() > 0)
+					split.add(builder.toString().trim());
+				split.add(param);
+				builder = new StringBuilder();
+			}
+			else
+				builder.append(param + " ");
+		}
+		return split;
 	}
 
 	public static ArrayList<String> cutList(ArrayList<String> list, int startIndex, int endIndex)
@@ -37,7 +100,7 @@ public class CSharpParser
 		return temp;
 	}
 
-	public static int findIndexOfString(ArrayList<String> lines, String s)
+	public static int indexOfString(ArrayList<String> lines, String s)
 	{
 		return indexOfString(lines, s, -1, -1);
 	}
@@ -52,7 +115,7 @@ public class CSharpParser
 					cl++;
 				if (lines.get(i).contains("("))
 					bl++;
-				if (lines.get(i).contains(s) && (curlyLevel != -1 ? cl == curlyLevel : true) && (bracketLevel != -1 ? bl == bracketLevel : true))
+				if (lines.get(i).contains(s) && (curlyLevel >= 0 ? cl == curlyLevel : true) && (bracketLevel >= 0 ? bl == bracketLevel : true))
 					return i;
 				if (lines.get(i).contains("}"))
 					cl--;
@@ -72,13 +135,13 @@ public class CSharpParser
 	public static void parseComments(ArrayList<String> lines)
 	{
 		ArrayList<String> save = lines;
-		int commentBlockCount = 0, inlineCommentCount = 0, position = 0;
-		for (int i = findIndexOfString(save, "/*"); i != -1; i = findIndexOfString(save, "/*"))
+		int commentBlockCount = 0, inlineCommentCount = 0, position = 1;
+		for (int i = indexOfString(save, "/*"); i != -1; i = indexOfString(save, "/*"))
 		{
 			position += i;
 			int add = 0;
 			ArrayList<String> commentLines = new ArrayList<String>();
-			for (int j = i; j <= findIndexOfString(save, "*/"); j++)
+			for (int j = i; j <= indexOfString(save, "*/"); j++)
 				if (save.get(j).replace("/*", "").replace("*/", "").replace("*", "").trim().length() > 0)
 					commentLines.add(save.get(j).replace("/*", "").replace("*/", "").replace("*", "").trim());
 				else
@@ -91,28 +154,107 @@ public class CSharpParser
 			commentBlockCount++;
 			elements.add(new CSharpComment(commentLines, CSharpCommentType.BLOCK, position));
 			position += commentLines.size() + add;
-			save = cutList(save, findIndexOfString(save, "*/") + 1, save.size() - 1);
+			save = cutList(save, indexOfString(save, "*/") + 1, save.size() - 1);
 		}
 		save = lines;
 		position = 0;
-		for (int i = findIndexOfString(save, "//"); findIndexOfString(save, "//") != -1; i = findIndexOfString(save, "//"))
+		for (int i = indexOfString(save, "//"); indexOfString(save, "//") != -1; i = indexOfString(save, "//"))
 		{
 			position += i;
 			if (!save.get(i).trim().startsWith("*") && !save.get(i).trim().startsWith("/*") && save.get(i).substring(save.get(i).indexOf("//")).replace("//", "").trim().length() != 0)
 			{
+				position++;
 				inlineCommentCount++;
 				ArrayList<String> line = new ArrayList<String>();
 				line.add(save.get(i).substring(save.get(i).indexOf("//")).replace("//", "").trim());
 				elements.add(new CSharpComment(line, CSharpCommentType.INLINE, position));
 			}
-			position++;
-			save = cutList(save, findIndexOfString(save, "//") + 1, save.size() - 1);
+			save = cutList(save, i + 1, save.size() - 1);
 		}
 	}
 
 	public static void parseMethods(ArrayList<String> lines)
 	{
+		ArrayList<String> save = lines;
+		int position = 1; //TODO: Same line curlies
+		for (int i = indexOfString(save, "(", METHOD_LEVEL - 1, 1); indexOfString(save, "(", METHOD_LEVEL - 1, 1) != -1; i = indexOfString(save, "(", METHOD_LEVEL - 1, 1))
+		{
+			position += i;
+			String line = save.get(i);
+			ArrayList<String> split = splitLine(line);
+			ArrayList<String> modifiers = new ArrayList<String>();
+			ArrayList<String> parameters = parseParameters(split);
+			String name = split.get(split.indexOf("(") - 1);
+			for (int j = 0; j < split.indexOf("(") - 1; j++)
+				modifiers.add(split.get(j));
+			if (split.get(split.size() - 1).equals(";"))
+			{
+				elements.add(new CSharpAbstractMethod(modifiers, name, parameters, position));
+				position += 1;
+			}
+			else
+				if (split.contains(":"))
+				{
+					CSharpConstructor constructor = null;
+					if (split.get(split.indexOf(":") + 1).equals("base"))
+						constructor = new CSharpConstructor(modifiers, name, parameters, CSharpConstructorType.BASE, position);
+					if (split.get(split.indexOf(":") + 1).equals("this"))
+						constructor = new CSharpConstructor(modifiers, name, parameters, CSharpConstructorType.THIS, position); //TODO: Fix base and this params
+					ArrayList<String> methodLines = cutList(save, indexOfString(save, "}", METHOD_LEVEL, -1), indexOfString(save, "}", METHOD_LEVEL, -1));
+					int add = 0;
+					System.out.println(line);
+					printList(methodLines);
+					for (String s : methodLines)
+					{
+						constructor.addLine(s);
+						add++;
+					}
+					elements.add(constructor);
+					position += 1 + add;
+				}
+				else
+				{
+					CSharpMethod method = new CSharpMethod(modifiers, name, parameters, position);
+					ArrayList<String> methodLines = cutList(save, indexOfString(save, "{", METHOD_LEVEL, -1), indexOfString(save, "}", METHOD_LEVEL, -1));
+					int add = 0;
+					for (String s : methodLines)
+					{
+						method.addLine(s);
+						add++;
+					}
+					elements.add(method);
+					position += 1 + add;
+				}
+			save = cutList(save, i + 1, save.size() - 1);
+		}
+	}
 
+	public static ArrayList<String> parseParameters(ArrayList<String> split)
+	{
+		ArrayList<String> parameters = new ArrayList<String>();
+		StringBuilder param = new StringBuilder();
+		for (int j = split.indexOf("(") + 1; j < split.indexOf(")"); j++)
+		{
+			if (!split.get(j).equals(","))
+				param.append(split.get(j) + " ");
+			else
+			{
+				parameters.add(param.toString().trim());
+				param = new StringBuilder();
+			}
+		}
+		parameters.add(param.toString().trim());
+		return parameters;
+	}
+
+	public static void parseVariables(ArrayList<String> lines)
+	{
+		ArrayList<String> save = lines;
+		for (int i = indexOfString(save, " ", METHOD_LEVEL-1, -1); indexOfString(save, " ", METHOD_LEVEL-1, -1) != -1; i = indexOfString(save, "", METHOD_LEVEL-1, -1))
+		{
+			System.out.println(lines.get(i));
+			save = cutList(save, i + 1, save.size() - 1);
+		}
 	}
 
 	public static void printElements()
@@ -120,7 +262,7 @@ public class CSharpParser
 		for (CSharpElement element : elements)
 		{
 			System.out.println("Line " + element.getLine() + ": " + element.getClass().getSimpleName() + ": " + element.getName());
-			//			System.out.println(element.toString() + "\n");
+			System.out.println(element.toString() + "\n-");
 		}
 	}
 
@@ -139,31 +281,23 @@ public class CSharpParser
 	public static void main(String[] args)
 	{
 		ArrayList<String> lines = new ArrayList<String>();
-		lines.add("/*"); // 0
-		lines.add("* big"); // 1
-		lines.add("* comment"); // 2
-		lines.add("* yoho"); // 3
-		lines.add("*/"); // 4
-		lines.add("public void test()"); // 5
-		lines.add("/* other comment */"); // 6
-		lines.add("public static void main(String[] args) //inline comment"); // 7
-		lines.add("//an inline comment"); // 8
-		lines.add("/* another"); // 9
-		lines.add("* comment //test"); // 10
-		lines.add("*/"); // 11
-		lines.add("//another inline comment"); // 12
-		parseComments(lines);
-		ArrayList<String> modifiers = new ArrayList<String>();
-		modifiers.add("public");
-		modifiers.add("static");
-		modifiers.add("void");
-		ArrayList<String> parameters = new ArrayList<String>();
-		parameters.add("int param1");
-		parameters.add("String param2");
-		CSharpConstructor constructor = new CSharpConstructor(modifiers, "main", parameters, CSharpConstructorType.THIS, 10);
-		constructor.addLine("\tsampleLine(param1);");
-		elements.add(constructor);
-		sortElements();
-		printElements();
+		Scanner scanner;
+		try
+		{
+			scanner = new Scanner(new File("Test CSharp File"));
+			while (scanner.hasNextLine())
+			{
+				String line = scanner.nextLine();
+				lines.add(line);
+			}
+			printList(lines);
+			parse(lines);
+			sortElements();
+			printElements();
+		}
+		catch (FileNotFoundException e)
+		{
+			e.printStackTrace();
+		}
 	}
 }

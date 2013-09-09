@@ -1,0 +1,39 @@
+/*
+* big
+* comment
+* yoho
+*/
+public abstract void test(int param1, int param2);
+
+/*
+* Some other comment
+*/
+public void test(int param1, int param2):base(param3, param4) {
+	test();
+	test2();
+	int notThis;
+	int notThisEither = value;
+	Test.addListener(new Listener()
+	{
+		public void listen()
+		{
+			execute();
+		}
+	}
+}
+
+/* some comment on main
+* longer
+*/
+
+public static void main(String[] args) //inline comment on main
+{
+	Line 1
+	Line 2
+	Line 3
+} //second inline comment
+
+private constructor(String param1, ArrayList<String> param2)
+{
+	Line 1
+}
