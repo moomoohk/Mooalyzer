@@ -68,4 +68,12 @@ public class Utils
 		temp += ")";
 		return temp.trim();
 	}
+	
+	public static <T> ArrayList<T> makeArrayList(T ... params)
+	{
+		ArrayList<T> arraylist=new ArrayList<T>();
+		for(T param: params)
+			arraylist.add(param);
+		return arraylist;
+	}
 }

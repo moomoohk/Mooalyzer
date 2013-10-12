@@ -1,0 +1,4 @@
+public static partial class animal { public static string chicken_brown = @"assets\animal\chicken_brown.png"; }
+public static partial class animal { public static string chicken_white = @"assets\animal\chicken_white.png"; }
+public static partial class armor { public static partial class helmet { public static partial class oak { public static string helmback1 = @"assets\armor\helmet\oak\helmback1.png"; } } }
+public static partial class armor { public static partial class helmet { public static partial class oak { public static string helmback2 = @"assets\armor\helmet\oak\helmback2.png"; } } }
