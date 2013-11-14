@@ -7,14 +7,12 @@ public abstract class CSharpElement
 	protected ArrayList<CSharpAttribute> attributes;
 	protected ArrayList<String> modifiers;
 	protected String name;
-	protected int line;
-	
-	public CSharpElement(ArrayList<String> modifiers, String name, int line)
+
+	public CSharpElement(ArrayList<String> modifiers, String name)
 	{
 		this.attributes = new ArrayList<CSharpAttribute>();
 		this.modifiers = modifiers == null ? new ArrayList<String>() : modifiers;
 		this.name = name;
-		this.line = line;
 	}
 
 	public ArrayList<CSharpAttribute> getAttributes()
@@ -38,9 +36,18 @@ public abstract class CSharpElement
 		return this.name;
 	}
 
-	public int getLine()
+	public String details()
 	{
-		return this.line;
+		String st = "Name: " + this.name;
+		if (this.modifiers != null && this.modifiers.size() > 0)
+		{
+			st += "\nModifiers: ";
+			for (String modifier : this.modifiers)
+				st += "[" + modifier + "]";
+		}
+		else
+			st += "\nModifiers: [none]";
+		return st;
 	}
 
 	public String toString()

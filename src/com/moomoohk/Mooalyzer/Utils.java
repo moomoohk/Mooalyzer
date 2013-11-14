@@ -76,4 +76,11 @@ public class Utils
 			arraylist.add(param);
 		return arraylist;
 	}
+	
+	public static void printList(ArrayList<String> list)
+	{
+		for (String st : list)
+			System.out.print("[" + st + "]");
+		System.out.println();
+	}
 }

@@ -7,24 +7,24 @@ public class CSharpMethod extends CSharpElement
 	private ArrayList<String> parameters;
 	private ArrayList<String> lines;
 
-	public CSharpMethod(String name, int line)
+	public CSharpMethod(String name)
 	{
-		this(null, name, null, line);
+		this(null, name, null);
 	}
 
-	public CSharpMethod(ArrayList<String> modifiers, String name, int line)
+	public CSharpMethod(ArrayList<String> modifiers, String name)
 	{
-		this(modifiers, name, null, line);
+		this(modifiers, name, null);
 	}
 
-	public CSharpMethod(String name, ArrayList<String> parameters, int line)
+	public CSharpMethod(String name, ArrayList<String> parameters)
 	{
-		this(null, name, parameters, line);
+		this(null, name, parameters);
 	}
 
-	public CSharpMethod(ArrayList<String> modifiers, String name, ArrayList<String> parameters, int line)
+	public CSharpMethod(ArrayList<String> modifiers, String name, ArrayList<String> parameters)
 	{
-		super(modifiers, name, line);
+		super(modifiers, name);
 		this.parameters = parameters == null ? new ArrayList<String>() : parameters;
 		this.lines = new ArrayList<String>();
 	}
@@ -59,7 +59,7 @@ public class CSharpMethod extends CSharpElement
 	{
 		String s = "{\n";
 		for (String line : this.lines)
-			s += line + "\n";
+			s += "\t" + line + "\n";
 		return s + "}";
 	}
 }

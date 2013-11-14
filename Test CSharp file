@@ -1,6 +1,6 @@
 namespace testNameSpace
 {
-	class testClass
+	class testClass:superInterface1, superInterface2
 	{
 		/*
 		* big
@@ -38,18 +38,39 @@ namespace testNameSpace
 		
 		public static void main(String[] args) //inline comment on main
 		{
-			Line 1
-			Line 2
-			Line 3
+			Line 1;
+			Line 2;
+			Line 3;
 		} //second inline comment
 		
 		private constructor(String param1, ArrayList<String> param2)
 		{
-			Line 1
+			Line 1;
+		}
+		
+		public void method(){
+			testLine();
 		}
 	}
 	interface testInterface
 	{
 		public int getID();
+	}
+	
+	public class class2
+	{
+		public static void main()
+		{
+		}
+	}
+}
+
+namespace testNamespace2
+{
+	public class class3
+	{
+		public void methodInClass2()
+		{
+		}
 	}
 }

@@ -4,24 +4,24 @@ import java.util.ArrayList;
 
 public class CSharpAbstractMethod extends CSharpMethod
 {
-	public CSharpAbstractMethod(String name, int line)
+	public CSharpAbstractMethod(String name)
 	{
-		this(null, name, null, line);
+		this(null, name, null);
 	}
 
-	public CSharpAbstractMethod(ArrayList<String> modifiers, String name, int line)
+	public CSharpAbstractMethod(ArrayList<String> modifiers, String name)
 	{
-		this(modifiers, name, null, line);
+		this(modifiers, name, null);
 	}
 
-	public CSharpAbstractMethod(String name, ArrayList<String> parameters, int line)
+	public CSharpAbstractMethod(String name, ArrayList<String> parameters)
 	{
-		this(null, name, parameters, line);
+		this(null, name, parameters);
 	}
 
-	public CSharpAbstractMethod(ArrayList<String> modifiers, String name, ArrayList<String> parameters, int line)
+	public CSharpAbstractMethod(ArrayList<String> modifiers, String name, ArrayList<String> parameters)
 	{
-		super(modifiers, name, line);
+		super(modifiers, name);
 	}
 
 	public String toString()

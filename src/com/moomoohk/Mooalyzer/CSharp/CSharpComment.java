@@ -12,9 +12,9 @@ public class CSharpComment extends CSharpElement
 	private CSharpCommentType type;
 	private ArrayList<String> lines;
 
-	public CSharpComment(ArrayList<String> lines, CSharpCommentType type, int line)
+	public CSharpComment(ArrayList<String> lines, CSharpCommentType type)
 	{
-		super(null, lines.get(0).length() > 5 ? lines.get(0).substring(0, 5) + "..." : lines.get(0) + (lines.size() > 1 ? " " + lines.get(1) : "") + (lines.size() > 2 ? "..." : ""), line);
+		super(null, lines.get(0).length() > 5 ? lines.get(0).substring(0, 5) + "..." : lines.get(0) + (lines.size() > 1 ? " " + lines.get(1) : "") + (lines.size() > 2 ? "..." : ""));
 		this.lines = lines;
 		this.type = type;
 	}
